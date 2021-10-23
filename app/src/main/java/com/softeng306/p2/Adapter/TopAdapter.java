@@ -27,16 +27,23 @@ import java.util.List;
 import java.util.Locale;
 
 public class TopAdapter extends RecyclerView.Adapter<TopAdapter.ViewHolder> implements CoreActivity {
+    //Define fields for later use in methods
     ArrayList<VehicleModel> vModels;
     Context context;
     IVehicleDataAccess vda;
+
 
     public TopAdapter(Context context,ArrayList<VehicleModel> topModels){
         this.context = context;
         this.vModels = topModels;
     }
 
-
+    /**
+     * Method creates a new view holder and initialises some private fields to be used by RecyclerView.
+     * @param parent the ViewGroup which the new View will be added after it is bound to an adapter position.
+     * @param viewType type of the view passed in
+     * @return a new ViewHolder that holds a view inflated with vehicle_item(s)
+     */
     @NonNull
     @Override
     public TopAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,10 +52,17 @@ public class TopAdapter extends RecyclerView.Adapter<TopAdapter.ViewHolder> impl
         return new ViewHolder(view);
     }
 
+    /**
+     * Method that calls the database object and retrieve information needed for displaying the vehicle
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull TopAdapter.ViewHolder holder, int position) {
         VehicleService.getInstance().InjectService(this);
         String vehicleName = vModels.get(position).getVName();
+
+        //get the information from database for each vehicle title supplied
         vda.getVehicleByName(vehicleName,new OnGetVehicleListener() {
 
             @Override
@@ -80,20 +94,33 @@ public class TopAdapter extends RecyclerView.Adapter<TopAdapter.ViewHolder> impl
 
     }
 
+    /**
+     * A helper method that convert name of car to image name
+     * @param carTitle
+     * @return string in the format of image file name
+     */
     private String convertNameToFileName(String carTitle){
         return carTitle.toLowerCase(Locale.ROOT).replace(" ","_").replace("-","_");
     }
+
 
     @Override
     public int getItemCount() {
         return vModels.size();
     }
 
+    /**
+     * initialize the database object
+     * @param vehicleDataAccess
+     */
     @Override
     public void SetDataAccess(IVehicleDataAccess vehicleDataAccess) {
         vda = vehicleDataAccess;
     }
 
+    /**
+     * Method sets up global variables in a view holder and linked to their id
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         //Initialize variable
         ImageView imageView;

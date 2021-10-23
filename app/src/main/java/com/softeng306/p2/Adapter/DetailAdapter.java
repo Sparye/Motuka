@@ -14,6 +14,7 @@ import java.util.List;
 
 public class DetailAdapter  extends ArrayAdapter<DetailModel> {
 
+    //Define fields for later use in methods
     private Context activityContext;
     private List<DetailModel> list;
     public static final String TAG = "ListView";
@@ -24,6 +25,13 @@ public class DetailAdapter  extends ArrayAdapter<DetailModel> {
         this.list = list;
     }
 
+    /**
+     * create a View containing information about vehicle details supplied by the database
+     * @param position
+     * @param view
+     * @param viewGroup
+     * @return
+     */
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup){
         final ViewHolder viewHolder;
@@ -44,6 +52,9 @@ public class DetailAdapter  extends ArrayAdapter<DetailModel> {
         return view;
     }
 
+    /**
+     * a private class holding view elements for each detail row
+     */
     private static class ViewHolder{
         TextView keyText;
         TextView valueText;
